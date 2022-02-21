@@ -126,8 +126,8 @@ function ghostAnimation(){
     if(marginVerticalGhost < 0){marginVerticalGhost = 0};
 
     if(marginHorizontalGhost >= marginHorizontal && marginHorizontalGhost <= (marginHorizontal + 7) && marginVerticalGhost >= marginVertical && marginVerticalGhost <= (marginVertical + 7)){
-        alert("אבוד:-(");
         window.location.reload();
+        alert("אבוד:-(");
     }
 
     },25)
