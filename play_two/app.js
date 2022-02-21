@@ -7,6 +7,8 @@ var sumBalls = document.getElementById("sumBalls")
 let marginHorizontal = 0;
 let marginVertical = 0;
 
+ghostAnimation();
+
 function movePakman(e) {
 
     switch (e.key) {
@@ -82,12 +84,52 @@ function swallowBall(){
 }
 
 function pakmanAnimation(){
-
     mouth = document.getElementById("mouth");
     if (mouth.style.backgroundColor == "white"){
         mouth.style.backgroundColor = "red"
     }else{
         mouth.style.backgroundColor = "white"
     }
+}
 
+
+function ghostAnimation(){
+
+    ghost = document.getElementById("ghost");
+    let num = 0;
+    let marginHorizontalGhost = 93;
+    let marginVerticalGhost = 93;
+    setInterval(()=>{
+        num += 1;
+        if (num % 10 == 0){
+            random = Math.floor(Math.random() * 4);
+        }
+        switch (random) {
+            case 0:
+                marginHorizontalGhost += 2;
+                break;
+            case 1:
+                marginHorizontalGhost -= 2;
+                break
+            case 2:
+                marginVerticalGhost += 2;
+                break
+            case 3:
+                marginVerticalGhost -= 2;
+        }
+        ghost.style.marginLeft = marginHorizontalGhost + "%";
+        ghost.style.marginTop = marginVerticalGhost + "%";
+
+    if(marginHorizontalGhost > 93){marginHorizontalGhost = 93};
+    if(marginHorizontalGhost < 0){ marginHorizontalGhost = 0};
+    if(marginVerticalGhost > 93){marginVerticalGhost = 93};
+    if(marginVerticalGhost < 0){marginVerticalGhost = 0};
+
+    if(marginHorizontalGhost >= marginHorizontal && marginHorizontalGhost <= (marginHorizontal + 7) && marginVerticalGhost >= marginVertical && marginVerticalGhost <= (marginVertical + 7)){
+        alert("אבוד:-(");
+        window.location.reload();
+    }
+
+    },25)
+     
 }
