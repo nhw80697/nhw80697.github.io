@@ -2,6 +2,7 @@ const pakman = document.getElementById("pakman");
 const frame = document.getElementById("frame");
 const audioSwallow = new Audio('./195929_1459167-lq.mp3');
 const audioWin = new Audio('./578572_10522382-lq.mp3');
+const audioDeath = new Audio('./death.mp3');
 var sumBalls = document.getElementById("sumBalls")
 
 let marginHorizontal = 0;
@@ -126,8 +127,18 @@ function ghostAnimation(){
     if(marginVerticalGhost < 0){marginVerticalGhost = 0};
 
     if(marginHorizontalGhost >= marginHorizontal && marginHorizontalGhost <= (marginHorizontal + 7) && marginVerticalGhost >= marginVertical && marginVerticalGhost <= (marginVertical + 7)){
-        window.location.reload();
-        alert("אבוד:-(");
+        audioDeath.play();
+
+        let i = 6;
+        setInterval(()=>{
+            if (i > 0){pakman.style.height = i + "%"; pakman.style.width = i + "%"}else{
+                window.location.reload();
+                alert("אבוד:-(");
+            }
+            i--;
+        },100)
+
+        
     }
 
     },25)
