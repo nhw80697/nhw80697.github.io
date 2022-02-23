@@ -16,3 +16,12 @@
     margin:3.7% 4% 3.6% 4%;
     visibility: hidden;
 }
+
+.ghost{
+    display: inline-block; 
+    position: absolute; 
+    width: 7%; 
+    height: 7%; 
+    background-color: black; 
+    border-radius: 80%; 
+}

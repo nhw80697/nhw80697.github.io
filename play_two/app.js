@@ -1,14 +1,17 @@
+// import { Ghost} from "./functions/ghost.js";
+
 const pakman = document.getElementById("pakman");
 const frame = document.getElementById("frame");
-const audioSwallow = new Audio('./195929_1459167-lq.mp3');
-const audioWin = new Audio('./578572_10522382-lq.mp3');
-const audioDeath = new Audio('./death.mp3');
+const audioSwallow = new Audio('./audio/195929_1459167-lq.mp3');
+const audioWin = new Audio('./audio/578572_10522382-lq.mp3');
+const audioDeath = new Audio('./audio/death.mp3');
 var sumBalls = document.getElementById("sumBalls")
+const ghost1 = document.getElementById("ghost");
 
 let marginHorizontal = 0;
 let marginVertical = 0;
 
-ghostAnimation();
+ghostAnimation(ghost1,50,10);
 
 function movePakman(e) {
 
@@ -46,9 +49,6 @@ function movePakman(e) {
 function creatBalls() {
     for (let i = 0; i != 100; i++) {
         const ball = createBall();
-        ball.addEventListener('click', function (event) {
-            console.log(event)
-        })
         frame.appendChild(ball);
     }
     balls = document.getElementsByClassName("ball");
@@ -77,6 +77,15 @@ function swallowBall(){
         }
     }
     sumBalls.innerHTML = 100 - document.getElementsByClassName("hidden-ball").length;
+    if (document.getElementsByClassName("hidden-ball").length == 30){
+        let ghosts = document.getElementsByClassName("ghost");
+        console.log(ghosts);
+        if(ghosts.length == 1){
+            let ghost2 = new Ghost(2,0,0);
+            frame.insertAdjacentElement('afterbegin', ghost2.element);
+            ghostAnimation(ghost2.element,18,20);
+        }
+    }
     if (document.getElementsByClassName("hidden-ball").length == 100){
         audioWin.play();
         alert("אתה אלוף!");
@@ -94,15 +103,14 @@ function pakmanAnimation(){
 }
 
 
-function ghostAnimation(){
+function ghostAnimation(ghost, fast, steps){
 
-    ghost = document.getElementById("ghost");
     let num = 0;
     let marginHorizontalGhost = 93;
     let marginVerticalGhost = 93;
     setInterval(()=>{
         num += 1;
-        if (num % 10 == 0){
+        if (num % steps == 0){
             random = Math.floor(Math.random() * 4);
         }
         switch (random) {
@@ -137,10 +145,25 @@ function ghostAnimation(){
             }
             i--;
         },100)
-
-        
     }
+    },fast)
+}
 
-    },25)
-     
+
+
+//contractors
+
+function Ghost(id ,marginLeft, marginTop){
+    this.id = id;
+
+    this.element = document.createElement('div');
+    this.element.classList.add("ghost");
+    this.element.style.marginLeft = marginLeft + "%";
+    this.element.style.marginTop = marginTop + "%";
+    this.element.style.backgroundColor = "black";
+
+    //סנפירים
+    let sticks = ` <div style="height: 100%; width: 5%; background-color: black; display: inline-block; margin-left: 15%;"></div>
+                        <div style="height: 100%; width: 5%; background-color: black; display: inline-block; margin-right: 15%; float: right;"></div>`;
+    this.element.innerHTML += sticks; 
 }
