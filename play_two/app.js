@@ -136,7 +136,8 @@ function ghostAnimation(ghost, fast, steps){
 
     if(marginHorizontalGhost >= marginHorizontal && marginHorizontalGhost <= (marginHorizontal + 7) && marginVerticalGhost >= marginVertical && marginVerticalGhost <= (marginVertical + 7)){
         audioDeath.play();
-
+        marginHorizontal = "0%";
+        marginVertical = "0%"
         let i = 6;
         setInterval(()=>{
             if (i > 0){pakman.style.height = i + "%"; pakman.style.width = i + "%"}else{
