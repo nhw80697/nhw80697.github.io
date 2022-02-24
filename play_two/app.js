@@ -72,18 +72,20 @@ function swallowBall(){
     for (let i = 0; i < balls.length; i++){
         let locationBall = balls[i].getBoundingClientRect();
         if (locationBall.x >= locationXstart && locationBall.x <= locationXend && locationBall.y >= locationYstart && locationBall.y <= locationYend){
+                if(balls[i].id=="golden-egg"){  document.getElementsByClassName("ghost")[0].style.display = "none"};
                 balls[i].setAttribute('class', "hidden-ball");
                 audioSwallow.play();
         }
     }
     sumBalls.innerHTML = 100 - document.getElementsByClassName("hidden-ball").length;
-    if (document.getElementsByClassName("hidden-ball").length == 30){
+    if (document.getElementsByClassName("hidden-ball").length == 25){
         let ghosts = document.getElementsByClassName("ghost");
-        console.log(ghosts);
         if(ghosts.length == 1){
-            let ghost2 = new Ghost(2,0,0);
+            let ghost2 = new Ghost(2,93,100);
             frame.insertAdjacentElement('afterbegin', ghost2.element);
-            ghostAnimation(ghost2.element,18,20);
+            ghostAnimation(ghost2.element,20,20);
+            let goldenEgg = document.getElementsByClassName("ball")[Math.floor(Math.random() * document.getElementsByClassName("ball").length)];
+            goldenEggAnimation(goldenEgg)
         }
     }
     if (document.getElementsByClassName("hidden-ball").length == 100){
@@ -106,12 +108,13 @@ function pakmanAnimation(){
 function ghostAnimation(ghost, fast, steps){
 
     let num = 0;
-    let marginHorizontalGhost = 93;
+    let random = 0;
+    let marginHorizontalGhost = 100;
     let marginVerticalGhost = 93;
     setInterval(()=>{
         num += 1;
         if (num % steps == 0){
-            random = Math.floor(Math.random() * 4);
+             random = Math.floor(Math.random() * 4);
         }
         switch (random) {
             case 0:
@@ -126,15 +129,18 @@ function ghostAnimation(ghost, fast, steps){
             case 3:
                 marginVerticalGhost -= 2;
         }
+
+        
         ghost.style.marginLeft = marginHorizontalGhost + "%";
         ghost.style.marginTop = marginVerticalGhost + "%";
+        
 
     if(marginHorizontalGhost > 93){marginHorizontalGhost = 93};
     if(marginHorizontalGhost < 0){ marginHorizontalGhost = 0};
     if(marginVerticalGhost > 93){marginVerticalGhost = 93};
     if(marginVerticalGhost < 0){marginVerticalGhost = 0};
 
-    if(marginHorizontalGhost >= marginHorizontal && marginHorizontalGhost <= (marginHorizontal + 7) && marginVerticalGhost >= marginVertical && marginVerticalGhost <= (marginVertical + 7)){
+    if(ghost.style.display != 'none' && marginHorizontalGhost >= marginHorizontal && marginHorizontalGhost <= (marginHorizontal + 7) && marginVerticalGhost >= marginVertical && marginVerticalGhost <= (marginVertical + 7)){
         audioDeath.play();
         marginHorizontal = "0%";
         marginVertical = "0%"
@@ -150,6 +156,17 @@ function ghostAnimation(ghost, fast, steps){
     },fast)
 }
 
+function goldenEggAnimation(element){
+    element.setAttribute('id', 'golden-egg');
+
+    setInterval(()=>{
+        if (element.style.backgroundColor == "gold"){
+            element.style.backgroundColor = "gray"
+        }else{
+            element.style.backgroundColor = "gold"; 
+        }
+    },100)
+}
 
 
 //contractors
