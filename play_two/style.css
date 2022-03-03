@@ -1,3 +1,8 @@
+button{
+    width: 30%;
+    margin: auto auto;
+}
+
 #frame{
     display: grid;
     grid-template-columns:repeat(10,1fr);
@@ -6,8 +11,9 @@
     border: solid;
     position: relative;
     margin: auto auto;
-    margin-top: 10vh;
+    margin-top: 7vh;
 }
+
 
 .ball{
     display: inline-block;

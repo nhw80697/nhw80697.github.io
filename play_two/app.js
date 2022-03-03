@@ -1,17 +1,15 @@
 const frame = document.getElementById("frame");
 const ghost = new Ghost(1,100,100);
 const pacman = new Pacman(0,0);
-var ballsElements;
-var sumBalls = document.querySelector("#sumBalls");
+let ballsElements;
+let sumBalls = document.querySelector("#sumBalls");
 
 const audioSwallow = new Audio('./audio/195929_1459167-lq.mp3');
 const audioWin = new Audio('./audio/578572_10522382-lq.mp3');
 const audioDeath = new Audio('./audio/death.mp3');
 
 function startPlay(){
-    frame.appendChild(ghost.element);
-    ghost.playAnimation(10,20);
-    let pacmanElement = pacman.element;
+    
     frame.appendChild(pacman.element);
     document.addEventListener('keydown', pacman.movePacman);
 
@@ -20,6 +18,14 @@ function startPlay(){
         frame.appendChild(ball.element);
     }
     ballsElements = document.querySelectorAll(".ball")
+}
+
+function level(color, speed){
+    ghost.element.style.backgroundColor = color;
+    ghost.speed = speed;
+    frame.appendChild(ghost.element);
+    ghost.playAnimation();
+    pacman.canMove = true;
 }
 
 function eatBall(){
@@ -35,7 +41,7 @@ function eatBall(){
         if (locationBall.x >= locationXstart && locationBall.x <= locationXend && locationBall.y >= locationYstart && locationBall.y <= locationYend){
             ballsElements[i].setAttribute('class', "hidden-ball");
             audioSwallow.play();
-            i = ballsElements.length;
+            break;
         }
     }
     let hiddenBallsElements = document.querySelectorAll(".hidden-ball");
@@ -62,7 +68,7 @@ function Pacman(marginLeft, marginTop){
     this.element.innerHTML += this.eye;
     this.element.innerHTML += this.mouth;
 
-    canMove = true;
+    this.canMove = false;
 
     this.movePacman = (e) => {
         
@@ -93,6 +99,9 @@ function Pacman(marginLeft, marginTop){
         this.element.style.marginLeft = this.marginLeft + "%";
         this.element.style.marginTop = this.marginTop + "%";
 
+        let mouth = document.querySelector(".mouth");
+        mouth.style.backgroundColor ==  "white" ? mouth.style.backgroundColor = "orange" : mouth.style.backgroundColor = "white";
+
         eatBall();
     }
 }
@@ -112,6 +121,8 @@ function Ghost(id ,marginLeft, marginTop){
     this.width = 10;
     this.height = 10;
 
+    this.speed = 10;
+    this.steps = 20;
 
     this.element = document.createElement('div');
     this.element.classList.add("ghost");
@@ -122,13 +133,13 @@ function Ghost(id ,marginLeft, marginTop){
     let sticks = `<div class="stick" style="margin-left: 15%;"></div><div class="stick" style="margin-right: 15%; float: right;"></div>`;
     this.element.innerHTML += sticks;
 
-    this.playAnimation = function(speed, steps){
+    this.playAnimation = ()=>{
         let counter = 0;
         let random = 0;
         setInterval(()=>{
             counter++;
             if (this.animation == false){return}
-            if (counter % steps == 0){
+            if (counter % this.steps == 0){
                 random = Math.floor(Math.random() * 4);
             }
             switch (random) {
@@ -162,7 +173,7 @@ function Ghost(id ,marginLeft, marginTop){
                     console.log(this.marginLeft + " " + pacman.marginLeft)
                     console.log(this.marginTop + " " + pacman.marginTop)   
                 }
-        },speed)
+        },this.speed)
     }
 
     this.deathAnimation = ()=>{
